@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['ingresar'])) {
     $password = isset($_POST['password']) ? $_POST['password'] : null;
 
     if ($userName && $password) {
-        $apiUrl = "https://api-rest-cr.nicepebble-44974112.eastus.azurecontainerapps.io/manager/login";
+        $apiUrl = "http://localhost:8081/manager/login";
 
         $postData = json_encode(array("userName" => $userName, "password" => $password));
 

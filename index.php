@@ -32,7 +32,7 @@
 
         // Manejar el envío de la infracción
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reason'], $_POST['observations'], $_POST['mountDue'], $_POST['managerID'], $_POST['reportID'])) {
-            $apiUrl = "https://api-rest-cr.nicepebble-44974112.eastus.azurecontainerapps.io/infraction";
+            $apiUrl = "http://localhost:8081/infraction";
             $postData = json_encode(array(
                 "reason" => $_POST['reason'],
                 "observations" => $_POST['observations'],
@@ -60,7 +60,7 @@
                 echo "<script>alert('Infracción creada con éxito');</script>";
 
             // Preparar datos para enviar al endpoint /history antes de eliminar el reporte
-            $historyUrl = "https://api-rest-cr.nicepebble-44974112.eastus.azurecontainerapps.io/history";
+            $historyUrl = "http://localhost:8081/history";
             $historyData = json_encode(array(
                 "status" => "completado",
                 "observations" => $_POST['observations'],
@@ -78,7 +78,7 @@
             $historyResponse = file_get_contents($historyUrl, false, $historyContext);
 
             // Independientemente del resultado de la actualización del historial, proceder a eliminar el reporte
-            $deleteUrl = "https://api-rest-cr.nicepebble-44974112.eastus.azurecontainerapps.io/report/" . $_POST['reportID'];
+            $deleteUrl = "http://localhost:8081/report/" . $_POST['reportID'];
             $deleteContextOptions = [
                 "http" => [
                     "method" => "DELETE",
@@ -102,7 +102,7 @@
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['rejectObservations'], $_POST['rejectReportID'], $_POST['rejectPlate'], $_POST['managerID'])) {
             // Preparar los datos para enviar al endpoint /history antes de eliminar el reporte
-            $historyUrl = "https://api-rest-cr.nicepebble-44974112.eastus.azurecontainerapps.io/history";
+            $historyUrl = "http://localhost:8081/history";
             $historyData = json_encode(array(
                 "status" => "rechazado",
                 "observations" => $_POST['rejectObservations'],
@@ -121,7 +121,7 @@
             $historyResponse = file_get_contents($historyUrl, false, $historyContext);
         
             // Proceder a eliminar el reporte, independientemente del resultado de la actualización del historial
-            $deleteUrl = "https://api-rest-cr.nicepebble-44974112.eastus.azurecontainerapps.io/report/" . $_POST['rejectReportID'];
+            $deleteUrl = "http://localhost:8081/report/" . $_POST['rejectReportID'];
             $deleteContextOptions = [
                 "http" => [
                     "method" => "DELETE",
@@ -148,7 +148,7 @@
         <main>
             <div id="navigation">
                 <?php
-                $apiUrl = "https://api-rest-cr.nicepebble-44974112.eastus.azurecontainerapps.io/report";
+                $apiUrl = "http://localhost:8081/report";
 
                 // Crear un contexto de stream para definir los encabezados HTTP
                 $contextOptions = [
@@ -184,7 +184,7 @@
                     $count = 1;
                     foreach ($reports as $report) {
                         echo "<div id='details" . $count . "' class='report-details'>";
-                        echo "<img src='https://api-rest-cr.nicepebble-44974112.eastus.azurecontainerapps.io/report/" . htmlspecialchars($report['id']) . "/photo' alt='Foto del reporte'>";
+                        echo "<img src='http://localhost:8081/report/" . htmlspecialchars($report['id']) . "/photo' alt='Foto del reporte'>";
                         echo "<p> Descrición: " . htmlspecialchars($report['description']) . "</p>";
                         echo "<p> Ubicación: " . htmlspecialchars($report['location']) . "</p>";
                         echo "<p> Fecha: " . htmlspecialchars(date("Y-m-d", strtotime($report['date']))) . "</p>";
